@@ -1,0 +1,1 @@
+# necoa-seo-tool
