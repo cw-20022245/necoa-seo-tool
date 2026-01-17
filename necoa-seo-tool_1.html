@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NECOA 블로그 SEO 최적화 도구</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #6FB8E8 0%, #4A9FD8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(79, 159, 216, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6FB8E8 0%, #4A9FD8 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .header .brand {
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.95;
+            font-weight: 400;
+            letter-spacing: -0.3px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .user-guide {
+            background: linear-gradient(135deg, #F0F8FF 0%, #E8F4FC 100%);
+            border-left: 4px solid #4A9FD8;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 2px 8px rgba(79, 159, 216, 0.1);
+        }
+        
+        .user-guide h3 {
+            color: #4A9FD8;
+            margin-bottom: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .user-guide ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .user-guide li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .user-guide li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4A9FD8;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+        }
+        
+        .input-output-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 968px) {
+            .input-output-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section, .output-section {
+            background: #FAFBFC;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #E1E8ED;
+            transition: all 0.3s;
+        }
+        
+        .input-section:hover, .output-section:hover {
+            border-color: #4A9FD8;
+            box-shadow: 0 4px 12px rgba(79, 159, 216, 0.15);
+        }
+        
+        .output-section {
+            display: none;
+        }
+        
+        .output-section.show {
+            display: block;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 18px;
+            border: 2px solid #E1E8ED;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            transition: all 0.3s;
+            background: white;
+            color: #2c3e50;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4A9FD8;
+            box-shadow: 0 0 0 3px rgba(79, 159, 216, 0.1);
+        }
+        
+        .example-hint {
+            background: #FFF9E6;
+            border: 1px solid #FFE4A3;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: #856404;
+            line-height: 1.5;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 35px 0;
+        }
+        
+        .btn {
+            border: none;
+            padding: 16px 48px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            margin: 0 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6FB8E8 0%, #4A9FD8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 159, 216, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 159, 216, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary:disabled {
+            background: #B0BEC5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #4A9FD8;
+            border: 2px solid #4A9FD8;
+        }
+        
+        .btn-secondary:hover {
+            background: #4A9FD8;
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-copy {
+            background: #6FB8E8;
+            color: white;
+            box-shadow: 0 2px 8px rgba(111, 184, 232, 0.3);
+        }
+        
+        .btn-copy:hover {
+            background: #5AA7D7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(111, 184, 232, 0.4);
+        }
+        
+        .btn-download {
+            background: #4A9FD8;
+            color: white;
+            box-shadow: 0 2px 8px rgba(74, 159, 216, 0.3);
+        }
+        
+        .btn-download:hover {
+            background: #3A8DC7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 159, 216, 0.4);
+        }
+        
+        .btn-reset {
+            background: #B0BEC5;
+            color: white;
+            box-shadow: 0 2px 8px rgba(176, 190, 197, 0.3);
+        }
+        
+        .btn-reset:hover {
+            background: #90A4AE;
+            transform: translateY(-2px);
+        }
+        
+        .btn-compare {
+            background: white;
+            color: #4A9FD8;
+            border: 2px solid #4A9FD8;
+        }
+        
+        .btn-compare:hover {
+            background: #4A9FD8;
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            display: none;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #E1E8ED;
+            border-top: 4px solid #4A9FD8;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2em;
+            color: #4A9FD8;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .loading-tips {
+            font-size: 0.95em;
+            color: #78909C;
+            font-weight: 300;
+        }
+        
+        .error {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            border-left: 4px solid #C62828;
+            line-height: 1.6;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .success {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            color: #2E7D32;
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+            border-left: 4px solid #4CAF50;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        
+        .success.show {
+            display: block;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 18px;
+            padding: 20px;
+            background: linear-gradient(135deg, #F0F8FF 0%, #E8F4FC 100%);
+            border-radius: 10px;
+            border: 1px solid #D0E8F7;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #4A9FD8;
+            letter-spacing: 1px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #546E7A;
+            margin-top: 8px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .comparison-mode {
+            display: none;
+        }
+        
+        .comparison-mode.show {
+            display: grid;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: #F8FAFB;
+            color: #78909C;
+            font-size: 0.9em;
+            border-top: 1px solid #E1E8ED;
+        }
+
+        .footer .brand-text {
+            color: #4A9FD8;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="brand">NECOA</span> 블로그 SEO 최적화</h1>
+            <p>블로그 HTML을 AI가 자동으로 SEO 최적화해드립니다</p>
+        </div>
+        
+        <div class="content">
+            <!-- 사용자 가이드 -->
+            <div class="user-guide">
+                <h3>📖 사용 가이드</h3>
+                <ul>
+                    <li>쇼피파이 블로그 에디터에서 HTML 소스 코드를 복사해서 붙여넣으세요</li>
+                    <li>AI가 자동으로 제목 구조(H1-H3), 이미지 alt 속성, 키워드 강조를 최적화합니다</li>
+                    <li>원본 내용은 변경되지 않고, HTML 구조만 SEO에 맞게 개선됩니다</li>
+                    <li>최적화된 결과를 복사해서 쇼피파이 블로그에 다시 붙여넣으세요</li>
+                    <li>50,000자 이내의 HTML만 처리 가능합니다</li>
+                </ul>
+            </div>
+
+            <!-- 입력/출력 영역 -->
+            <div class="input-output-container" id="mainContainer">
+                <!-- 입력 섹션 -->
+                <div class="input-section">
+                    <div class="section-title">
+                        📝 원본 HTML 입력
+                    </div>
+                    <textarea id="inputHtml" placeholder="쇼피파이 블로그의 HTML 소스를 여기에 붙여넣으세요...
+
+예시:
+<div>
+  <h1>블로그 제목</h1>
+  <p>본문 내용...</p>
+  <img src='image.jpg'>
+</div>"></textarea>
+                    <div class="example-hint">
+                        💡 팁: 쇼피파이 블로그 에디터에서 "&lt;/&gt; Show HTML" 버튼을 클릭하면 HTML 코드를 볼 수 있습니다
+                    </div>
+                </div>
+
+                <!-- 출력 섹션 -->
+                <div class="output-section" id="outputSection">
+                    <div class="section-title">
+                        ✨ SEO 최적화된 HTML
+                    </div>
+                    <textarea id="outputHtml" readonly></textarea>
+                    
+                    <!-- 통계 -->
+                    <div class="stats" id="stats" style="display: none;">
+                        <div class="stat-item">
+                            <div class="stat-value" id="charCount">0</div>
+                            <div class="stat-label">글자 수</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="imgCount">0</div>
+                            <div class="stat-label">이미지 수</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="headingCount">0</div>
+                            <div class="stat-label">제목 태그</div>
+                        </div>
+                    </div>
+
+                    <!-- 액션 버튼들 -->
+                    <div class="action-buttons">
+                        <button class="action-btn btn-copy" onclick="copyToClipboard()">
+                            📋 결과 복사
+                        </button>
+                        <button class="action-btn btn-download" onclick="downloadHTML()">
+                            💾 다운로드
+                        </button>
+                        <button class="action-btn btn-compare" onclick="toggleComparison()">
+                            🔄 원본 비교
+                        </button>
+                        <button class="action-btn btn-reset" onclick="resetAll()">
+                            🔄 새로 시작
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 비교 모드 -->
+            <div class="input-output-container comparison-mode" id="comparisonMode">
+                <div class="input-section">
+                    <div class="section-title">📝 원본</div>
+                    <textarea id="originalCompare" readonly></textarea>
+                </div>
+                <div class="output-section show">
+                    <div class="section-title">✨ 최적화 결과</div>
+                    <textarea id="optimizedCompare" readonly></textarea>
+                </div>
+            </div>
+            
+            <!-- 최적화 버튼 -->
+            <div class="button-container">
+                <button class="btn btn-primary" id="optimizeBtn" onclick="optimizeHtml()">
+                    ✨ SEO 최적화 시작
+                </button>
+            </div>
+            
+            <!-- 로딩 -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">AI가 열심히 최적화 중입니다...</div>
+                <div class="loading-tips">잠시만 기다려주세요 (보통 10-30초 소요)</div>
+            </div>
+            
+            <!-- 메시지 -->
+            <div class="error" id="error"></div>
+            <div class="success" id="success"></div>
+        </div>
+
+        <div class="footer">
+            Powered by <span class="brand-text">NECOA</span> © 2025
+        </div>
+    </div>
+    
+    <script>
+        // ⚠️ 작업자용: n8n Webhook URL을 여기에 입력하세요
+        const WEBHOOK_URL = 'http://localhost:5678/webhook-test/shopify-seo-tool';
+        
+        let originalHtml = '';
+        let optimizedHtml = '';
+        
+        async function optimizeHtml() {
+            const inputHtml = document.getElementById('inputHtml').value.trim();
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const success = document.getElementById('success');
+            const outputSection = document.getElementById('outputSection');
+            const btn = document.getElementById('optimizeBtn');
+            
+            // 초기화
+            error.classList.remove('show');
+            success.classList.remove('show');
+            outputSection.classList.remove('show');
+            document.getElementById('comparisonMode').classList.remove('show');
+            
+            // 입력 검증
+            if (!inputHtml) {
+                showError('HTML 소스를 입력해주세요!');
+                return;
+            }
+            
+            if (inputHtml.length < 50) {
+                showError('HTML이 너무 짧습니다. 최소 50자 이상 입력해주세요.');
+                return;
+            }
+            
+            if (inputHtml.length > 50000) {
+                showError('HTML이 너무 깁니다. 50,000자 이하로 입력해주세요.');
+                return;
+            }
+            
+            // 원본 저장
+            originalHtml = inputHtml;
+            
+            // 로딩 시작
+            btn.disabled = true;
+            loading.classList.add('show');
+            
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        html: inputHtml
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`서버 오류 (${response.status}). 관리자에게 문의하세요.`);
+                }
+                
+                optimizedHtml = await response.text();
+                
+                // 결과 표시
+                document.getElementById('outputHtml').value = optimizedHtml;
+                outputSection.classList.add('show');
+                
+                // 통계 계산
+                updateStats(optimizedHtml);
+                
+                // 성공 메시지
+                showSuccess('✅ SEO 최적화가 완료되었습니다! 결과를 확인하고 복사해서 사용하세요.');
+                
+                // 스크롤
+                outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+            } catch (err) {
+                showError('오류가 발생했습니다: ' + err.message);
+            } finally {
+                loading.classList.remove('show');
+                btn.disabled = false;
+            }
+        }
+        
+        function updateStats(html) {
+            const statsDiv = document.getElementById('stats');
+            statsDiv.style.display = 'grid';
+            
+            // 글자 수
+            const textContent = html.replace(/<[^>]*>/g, '');
+            document.getElementById('charCount').textContent = textContent.length.toLocaleString();
+            
+            // 이미지 수
+            const imgMatches = html.match(/<img/gi);
+            document.getElementById('imgCount').textContent = imgMatches ? imgMatches.length : 0;
+            
+            // 제목 태그 수
+            const headingMatches = html.match(/<h[1-6]/gi);
+            document.getElementById('headingCount').textContent = headingMatches ? headingMatches.length : 0;
+        }
+        
+        function copyToClipboard() {
+            const output = document.getElementById('outputHtml');
+            output.select();
+            document.execCommand('copy');
+            
+            showSuccess('📋 클립보드에 복사되었습니다! 쇼피파이 블로그에 붙여넣으세요.');
+            
+            setTimeout(() => {
+                document.getElementById('success').classList.remove('show');
+            }, 3000);
+        }
+        
+        function downloadHTML() {
+            const blob = new Blob([optimizedHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'necoa-optimized-blog-' + new Date().getTime() + '.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showSuccess('💾 파일이 다운로드되었습니다!');
+            setTimeout(() => {
+                document.getElementById('success').classList.remove('show');
+            }, 3000);
+        }
+        
+        function toggleComparison() {
+            const comparisonMode = document.getElementById('comparisonMode');
+            const mainContainer = document.getElementById('mainContainer');
+            
+            if (comparisonMode.classList.contains('show')) {
+                comparisonMode.classList.remove('show');
+                mainContainer.style.display = 'grid';
+            } else {
+                document.getElementById('originalCompare').value = originalHtml;
+                document.getElementById('optimizedCompare').value = optimizedHtml;
+                comparisonMode.classList.add('show');
+                mainContainer.style.display = 'none';
+                comparisonMode.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function resetAll() {
+            if (confirm('새로 시작하시겠습니까? 현재 작업 내용이 사라집니다.')) {
+                document.getElementById('inputHtml').value = '';
+                document.getElementById('outputHtml').value = '';
+                document.getElementById('outputSection').classList.remove('show');
+                document.getElementById('comparisonMode').classList.remove('show');
+                document.getElementById('mainContainer').style.display = 'grid';
+                document.getElementById('error').classList.remove('show');
+                document.getElementById('success').classList.remove('show');
+                document.getElementById('stats').style.display = 'none';
+                originalHtml = '';
+                optimizedHtml = '';
+                
+                // 상단으로 스크롤
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function showError(message) {
+            const error = document.getElementById('error');
+            error.textContent = '❌ ' + message;
+            error.classList.add('show');
+            error.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function showSuccess(message) {
+            const success = document.getElementById('success');
+            success.textContent = message;
+            success.classList.add('show');
+        }
+        
+        // Ctrl+Enter로 최적화 실행
+        document.getElementById('inputHtml').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                optimizeHtml();
+            }
+        });
+    </script>
+</body>
+</html>
