@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NECOA SEO 최적화 도구</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #6FB8E8 0%, #4A9FD8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(79, 159, 216, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6FB8E8 0%, #4A9FD8 100%);
+            color: white;
+            padding: 50px 40px 30px 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        .header .brand {
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.15em;
+            opacity: 0.95;
+            font-weight: 400;
+            letter-spacing: -0.3px;
+            margin-bottom: 30px;
+        }
+        
+        /* 탭 네비게이션 */
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-top: 30px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            max-width: 300px;
+            padding: 18px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            letter-spacing: 0.3px;
+        }
+        
+        .tab-btn:first-child {
+            border-radius: 8px 0 0 0;
+        }
+        
+        .tab-btn:last-child {
+            border-radius: 0 8px 0 0;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .tab-btn.active {
+            background: white;
+            color: #4A9FD8;
+            border-bottom-color: #4A9FD8;
+        }
+        
+        .tab-btn .icon {
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+        
+        /* 탭 컨텐츠 */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .user-guide {
+            background: linear-gradient(135deg, #F0F8FF 0%, #E8F4FC 100%);
+            border-left: 4px solid #4A9FD8;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 2px 8px rgba(79, 159, 216, 0.1);
+        }
+        
+        .user-guide h3 {
+            color: #4A9FD8;
+            margin-bottom: 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .user-guide ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .user-guide li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .user-guide li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4A9FD8;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+        }
+        
+        .input-output-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 968px) {
+            .input-output-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-navigation {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                max-width: 100%;
+            }
+            
+            .tab-btn:first-child {
+                border-radius: 8px 8px 0 0;
+            }
+            
+            .tab-btn:last-child {
+                border-radius: 0;
+            }
+        }
+        
+        .input-section, .output-section {
+            background: #FAFBFC;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #E1E8ED;
+            transition: all 0.3s;
+        }
+        
+        .input-section:hover, .output-section:hover {
+            border-color: #4A9FD8;
+            box-shadow: 0 4px 12px rgba(79, 159, 216, 0.15);
+        }
+        
+        .output-section {
+            display: none;
+        }
+        
+        .output-section.show {
+            display: block;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 18px;
+            border: 2px solid #E1E8ED;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            transition: all 0.3s;
+            background: white;
+            color: #2c3e50;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4A9FD8;
+            box-shadow: 0 0 0 3px rgba(79, 159, 216, 0.1);
+        }
+        
+        .example-hint {
+            background: #FFF9E6;
+            border: 1px solid #FFE4A3;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: #856404;
+            line-height: 1.5;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 35px 0;
+        }
+        
+        .btn {
+            border: none;
+            padding: 16px 48px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            margin: 0 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6FB8E8 0%, #4A9FD8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 159, 216, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 159, 216, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary:disabled {
+            background: #B0BEC5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #4A9FD8;
+            border: 2px solid #4A9FD8;
+        }
+        
+        .btn-secondary:hover {
+            background: #4A9FD8;
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 20px;
+            border: 2px solid #E1E8ED;
+            background: white;
+            color: #4A9FD8;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        
+        .action-btn:hover {
+            border-color: #4A9FD8;
+            background: #F0F8FF;
+            transform: translateY(-2px);
+        }
+        
+        .btn-copy:hover {
+            background: #E8F5E9;
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .btn-download:hover {
+            background: #E3F2FD;
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+        
+        .btn-compare:hover {
+            background: #FFF3E0;
+            border-color: #FF9800;
+            color: #FF9800;
+        }
+        
+        .btn-reset:hover {
+            background: #FFEBEE;
+            border-color: #F44336;
+            color: #F44336;
+        }
+        
+        .stats-container {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #F0F8FF 0%, #E8F4FC 100%);
+            border-radius: 12px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #4A9FD8;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .comparison-mode {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .comparison-mode.show {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #F0F8FF 0%, #E8F4FC 100%);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #E1E8ED;
+            border-top: 4px solid #4A9FD8;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2em;
+            color: #4A9FD8;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .loading-tips {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .error, .success {
+            display: none;
+            padding: 18px 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        
+        .error.show, .success.show {
+            display: block;
+        }
+        
+        .error {
+            background: #FFEBEE;
+            color: #C62828;
+            border-left: 4px solid #C62828;
+        }
+        
+        .success {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-left: 4px solid #2E7D32;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            font-size: 0.95em;
+            border-top: 1px solid #E1E8ED;
+        }
+        
+        .brand-text {
+            font-weight: 700;
+            color: #4A9FD8;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1><span class="brand">NECOA</span> SEO 최적화 도구</h1>
+            <p>AI 기반 자동 SEO 최적화로 검색 엔진 노출을 극대화하세요</p>
+            
+            <!-- 탭 네비게이션 -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="switchTab('blog')">
+                    <span class="icon">📝</span>블로그 최적화
+                </button>
+                <button class="tab-btn" onclick="switchTab('product')">
+                    <span class="icon">🛍️</span>제품상세페이지 최적화
+                </button>
+            </div>
+        </div>
+
+        <!-- 블로그 최적화 탭 -->
+        <div id="blogTab" class="tab-content active">
+            <div class="content">
+                <!-- 사용 가이드 -->
+                <div class="user-guide">
+                    <h3>📖 블로그 최적화 사용 가이드</h3>
+                    <ul>
+                        <li>쇼피파이 블로그 편집기에서 HTML 소스를 복사합니다</li>
+                        <li>아래 입력창에 붙여넣고 "SEO 최적화 시작" 버튼을 클릭합니다</li>
+                        <li>AI가 자동으로 SEO 최적화를 진행합니다 (10-30초 소요)</li>
+                        <li>최적화된 결과를 복사하여 블로그에 다시 붙여넣습니다</li>
+                        <li>자동 최적화: 제목 태그(H1-H6), 이미지 alt 텍스트, 메타 태그, 구조화된 데이터</li>
+                    </ul>
+                </div>
+
+                <!-- 입력/출력 영역 -->
+                <div class="input-output-container" id="blogMainContainer">
+                    <!-- 입력 섹션 -->
+                    <div class="input-section">
+                        <div class="section-title">📥 블로그 HTML 입력</div>
+                        <textarea 
+                            id="blogInputHtml" 
+                            placeholder="쇼피파이 블로그 HTML 소스를 여기에 붙여넣으세요...
+
+예시:
+<h1>제목</h1>
+<p>본문 내용...</p>
+<img src='image.jpg'>
+..."
+                        ></textarea>
+                        <div class="example-hint">
+                            💡 Ctrl + Enter 단축키로 빠르게 최적화할 수 있습니다
+                        </div>
+                    </div>
+
+                    <!-- 출력 섹션 -->
+                    <div class="output-section" id="blogOutputSection">
+                        <div class="section-title">✨ 최적화 결과</div>
+                        
+                        <!-- 통계 -->
+                        <div class="stats-container" id="blogStats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="blogCharCount">0</div>
+                                <div class="stat-label">총 글자 수</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="blogImgCount">0</div>
+                                <div class="stat-label">이미지 수</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="blogHeadingCount">0</div>
+                                <div class="stat-label">제목 태그</div>
+                            </div>
+                        </div>
+
+                        <textarea id="blogOutputHtml" readonly></textarea>
+
+                        <!-- 액션 버튼들 -->
+                        <div class="action-buttons">
+                            <button class="action-btn btn-copy" onclick="copyToClipboard('blog')">
+                                📋 결과 복사
+                            </button>
+                            <button class="action-btn btn-download" onclick="downloadHTML('blog')">
+                                💾 다운로드
+                            </button>
+                            <button class="action-btn btn-compare" onclick="toggleComparison('blog')">
+                                🔄 원본 비교
+                            </button>
+                            <button class="action-btn btn-reset" onclick="resetAll('blog')">
+                                🔄 새로 시작
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 비교 모드 -->
+                <div class="input-output-container comparison-mode" id="blogComparisonMode">
+                    <div class="input-section">
+                        <div class="section-title">📝 원본</div>
+                        <textarea id="blogOriginalCompare" readonly></textarea>
+                    </div>
+                    <div class="output-section show">
+                        <div class="section-title">✨ 최적화 결과</div>
+                        <textarea id="blogOptimizedCompare" readonly></textarea>
+                    </div>
+                </div>
+                
+                <!-- 최적화 버튼 -->
+                <div class="button-container">
+                    <button class="btn btn-primary" id="blogOptimizeBtn" onclick="optimizeHtml('blog')">
+                        ✨ SEO 최적화 시작
+                    </button>
+                </div>
+                
+                <!-- 로딩 -->
+                <div class="loading" id="blogLoading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">AI가 열심히 블로그를 최적화 중입니다...</div>
+                    <div class="loading-tips">잠시만 기다려주세요 (보통 10-30초 소요)</div>
+                </div>
+                
+                <!-- 메시지 -->
+                <div class="error" id="blogError"></div>
+                <div class="success" id="blogSuccess"></div>
+            </div>
+        </div>
+
+        <!-- 제품상세페이지 최적화 탭 -->
+        <div id="productTab" class="tab-content">
+            <div class="content">
+                <!-- 사용 가이드 -->
+                <div class="user-guide">
+                    <h3>📖 제품상세페이지 최적화 사용 가이드</h3>
+                    <ul>
+                        <li>쇼피파이 제품 상세페이지 편집기에서 HTML 소스를 복사합니다</li>
+                        <li>아래 입력창에 붙여넣고 "SEO 최적화 시작" 버튼을 클릭합니다</li>
+                        <li>AI가 제품 정보를 분석하여 SEO 최적화를 진행합니다 (10-30초 소요)</li>
+                        <li>최적화된 결과를 복사하여 제품 상세페이지에 다시 붙여넣습니다</li>
+                        <li>자동 최적화: 제품 구조화 데이터, 키워드 최적화, 이미지 alt, 구매 유도 문구</li>
+                    </ul>
+                </div>
+
+                <!-- 입력/출력 영역 -->
+                <div class="input-output-container" id="productMainContainer">
+                    <!-- 입력 섹션 -->
+                    <div class="input-section">
+                        <div class="section-title">📥 제품 페이지 HTML 입력</div>
+                        <textarea 
+                            id="productInputHtml" 
+                            placeholder="쇼피파이 제품 상세페이지 HTML 소스를 여기에 붙여넣으세요...
+
+예시:
+<h1>제품명</h1>
+<div class='price'>$99.00</div>
+<p>제품 설명...</p>
+<img src='product.jpg'>
+..."
+                        ></textarea>
+                        <div class="example-hint">
+                            💡 제품명, 가격, 특징이 명확히 포함된 HTML을 입력하면 더 좋은 결과를 얻을 수 있습니다
+                        </div>
+                    </div>
+
+                    <!-- 출력 섹션 -->
+                    <div class="output-section" id="productOutputSection">
+                        <div class="section-title">✨ 최적화 결과</div>
+                        
+                        <!-- 통계 -->
+                        <div class="stats-container" id="productStats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="productCharCount">0</div>
+                                <div class="stat-label">총 글자 수</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="productImgCount">0</div>
+                                <div class="stat-label">이미지 수</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="productHeadingCount">0</div>
+                                <div class="stat-label">제목 태그</div>
+                            </div>
+                        </div>
+
+                        <textarea id="productOutputHtml" readonly></textarea>
+
+                        <!-- 액션 버튼들 -->
+                        <div class="action-buttons">
+                            <button class="action-btn btn-copy" onclick="copyToClipboard('product')">
+                                📋 결과 복사
+                            </button>
+                            <button class="action-btn btn-download" onclick="downloadHTML('product')">
+                                💾 다운로드
+                            </button>
+                            <button class="action-btn btn-compare" onclick="toggleComparison('product')">
+                                🔄 원본 비교
+                            </button>
+                            <button class="action-btn btn-reset" onclick="resetAll('product')">
+                                🔄 새로 시작
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 비교 모드 -->
+                <div class="input-output-container comparison-mode" id="productComparisonMode">
+                    <div class="input-section">
+                        <div class="section-title">📝 원본</div>
+                        <textarea id="productOriginalCompare" readonly></textarea>
+                    </div>
+                    <div class="output-section show">
+                        <div class="section-title">✨ 최적화 결과</div>
+                        <textarea id="productOptimizedCompare" readonly></textarea>
+                    </div>
+                </div>
+                
+                <!-- 최적화 버튼 -->
+                <div class="button-container">
+                    <button class="btn btn-primary" id="productOptimizeBtn" onclick="optimizeHtml('product')">
+                        ✨ SEO 최적화 시작
+                    </button>
+                </div>
+                
+                <!-- 로딩 -->
+                <div class="loading" id="productLoading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">AI가 열심히 제품 페이지를 최적화 중입니다...</div>
+                    <div class="loading-tips">잠시만 기다려주세요 (보통 10-30초 소요)</div>
+                </div>
+                
+                <!-- 메시지 -->
+                <div class="error" id="productError"></div>
+                <div class="success" id="productSuccess"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Powered by <span class="brand-text">NECOA</span> © 2025
+        </div>
+    </div>
+    
+    <script>
+        // ⚠️ 작업자용: n8n Webhook URL을 여기에 입력하세요
+        const WEBHOOK_URLS = {
+            blog: 'http://localhost:5678/webhook-test/shopify-seo-blog',
+            product: 'http://localhost:5678/webhook-test/shopify-seo-product'
+        };
+        
+        let blogOriginalHtml = '';
+        let blogOptimizedHtml = '';
+        let productOriginalHtml = '';
+        let productOptimizedHtml = '';
+        
+        // 탭 전환 함수
+        function switchTab(tabName) {
+            // 모든 탭 버튼과 컨텐츠 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 선택된 탭 활성화
+            event.target.closest('.tab-btn').classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+        
+        // 최적화 함수
+        async function optimizeHtml(type) {
+            const inputHtml = document.getElementById(type + 'InputHtml').value.trim();
+            const loading = document.getElementById(type + 'Loading');
+            const error = document.getElementById(type + 'Error');
+            const success = document.getElementById(type + 'Success');
+            const outputSection = document.getElementById(type + 'OutputSection');
+            const btn = document.getElementById(type + 'OptimizeBtn');
+            
+            // 초기화
+            error.classList.remove('show');
+            success.classList.remove('show');
+            outputSection.classList.remove('show');
+            document.getElementById(type + 'ComparisonMode').classList.remove('show');
+            
+            // 입력 검증
+            if (!inputHtml) {
+                showError(type, 'HTML 소스를 입력해주세요!');
+                return;
+            }
+            
+            if (inputHtml.length < 50) {
+                showError(type, 'HTML이 너무 짧습니다. 최소 50자 이상 입력해주세요.');
+                return;
+            }
+            
+            if (inputHtml.length > 50000) {
+                showError(type, 'HTML이 너무 깁니다. 50,000자 이하로 입력해주세요.');
+                return;
+            }
+            
+            // 원본 저장
+            if (type === 'blog') {
+                blogOriginalHtml = inputHtml;
+            } else {
+                productOriginalHtml = inputHtml;
+            }
+            
+            // 로딩 시작
+            btn.disabled = true;
+            loading.classList.add('show');
+            
+            try {
+                const response = await fetch(WEBHOOK_URLS[type], {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        html: inputHtml,
+                        type: type
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`서버 오류 (${response.status}). 관리자에게 문의하세요.`);
+                }
+                
+                const optimizedHtml = await response.text();
+                
+                // 결과 저장 및 표시
+                if (type === 'blog') {
+                    blogOptimizedHtml = optimizedHtml;
+                } else {
+                    productOptimizedHtml = optimizedHtml;
+                }
+                
+                document.getElementById(type + 'OutputHtml').value = optimizedHtml;
+                outputSection.classList.add('show');
+                
+                // 통계 계산
+                updateStats(type, optimizedHtml);
+                
+                // 성공 메시지
+                const message = type === 'blog' 
+                    ? '✅ 블로그 SEO 최적화가 완료되었습니다!' 
+                    : '✅ 제품 페이지 SEO 최적화가 완료되었습니다!';
+                showSuccess(type, message + ' 결과를 확인하고 복사해서 사용하세요.');
+                
+                // 스크롤
+                outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+            } catch (err) {
+                showError(type, '오류가 발생했습니다: ' + err.message);
+            } finally {
+                loading.classList.remove('show');
+                btn.disabled = false;
+            }
+        }
+        
+        // 통계 업데이트
+        function updateStats(type, html) {
+            const statsDiv = document.getElementById(type + 'Stats');
+            statsDiv.style.display = 'grid';
+            
+            // 글자 수
+            const textContent = html.replace(/<[^>]*>/g, '');
+            document.getElementById(type + 'CharCount').textContent = textContent.length.toLocaleString();
+            
+            // 이미지 수
+            const imgMatches = html.match(/<img/gi);
+            document.getElementById(type + 'ImgCount').textContent = imgMatches ? imgMatches.length : 0;
+            
+            // 제목 태그 수
+            const headingMatches = html.match(/<h[1-6]/gi);
+            document.getElementById(type + 'HeadingCount').textContent = headingMatches ? headingMatches.length : 0;
+        }
+        
+        // 클립보드 복사
+        function copyToClipboard(type) {
+            const output = document.getElementById(type + 'OutputHtml');
+            output.select();
+            document.execCommand('copy');
+            
+            const message = type === 'blog' 
+                ? '📋 클립보드에 복사되었습니다! 쇼피파이 블로그에 붙여넣으세요.' 
+                : '📋 클립보드에 복사되었습니다! 쇼피파이 제품 페이지에 붙여넣으세요.';
+            showSuccess(type, message);
+            
+            setTimeout(() => {
+                document.getElementById(type + 'Success').classList.remove('show');
+            }, 3000);
+        }
+        
+        // HTML 다운로드
+        function downloadHTML(type) {
+            const html = type === 'blog' ? blogOptimizedHtml : productOptimizedHtml;
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const filename = type === 'blog' 
+                ? 'necoa-optimized-blog-' + new Date().getTime() + '.html'
+                : 'necoa-optimized-product-' + new Date().getTime() + '.html';
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showSuccess(type, '💾 파일이 다운로드되었습니다!');
+            setTimeout(() => {
+                document.getElementById(type + 'Success').classList.remove('show');
+            }, 3000);
+        }
+        
+        // 비교 모드 토글
+        function toggleComparison(type) {
+            const comparisonMode = document.getElementById(type + 'ComparisonMode');
+            const mainContainer = document.getElementById(type + 'MainContainer');
+            
+            if (comparisonMode.classList.contains('show')) {
+                comparisonMode.classList.remove('show');
+                mainContainer.style.display = 'grid';
+            } else {
+                const originalHtml = type === 'blog' ? blogOriginalHtml : productOriginalHtml;
+                const optimizedHtml = type === 'blog' ? blogOptimizedHtml : productOptimizedHtml;
+                
+                document.getElementById(type + 'OriginalCompare').value = originalHtml;
+                document.getElementById(type + 'OptimizedCompare').value = optimizedHtml;
+                comparisonMode.classList.add('show');
+                mainContainer.style.display = 'none';
+                comparisonMode.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // 리셋
+        function resetAll(type) {
+            if (confirm('새로 시작하시겠습니까? 현재 작업 내용이 사라집니다.')) {
+                document.getElementById(type + 'InputHtml').value = '';
+                document.getElementById(type + 'OutputHtml').value = '';
+                document.getElementById(type + 'OutputSection').classList.remove('show');
+                document.getElementById(type + 'ComparisonMode').classList.remove('show');
+                document.getElementById(type + 'MainContainer').style.display = 'grid';
+                document.getElementById(type + 'Error').classList.remove('show');
+                document.getElementById(type + 'Success').classList.remove('show');
+                document.getElementById(type + 'Stats').style.display = 'none';
+                
+                if (type === 'blog') {
+                    blogOriginalHtml = '';
+                    blogOptimizedHtml = '';
+                } else {
+                    productOriginalHtml = '';
+                    productOptimizedHtml = '';
+                }
+                
+                // 상단으로 스크롤
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        // 에러 표시
+        function showError(type, message) {
+            const error = document.getElementById(type + 'Error');
+            error.textContent = '❌ ' + message;
+            error.classList.add('show');
+            error.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // 성공 메시지 표시
+        function showSuccess(type, message) {
+            const success = document.getElementById(type + 'Success');
+            success.textContent = message;
+            success.classList.add('show');
+        }
+        
+        // Ctrl+Enter로 최적화 실행
+        document.getElementById('blogInputHtml').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                optimizeHtml('blog');
+            }
+        });
+        
+        document.getElementById('productInputHtml').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                optimizeHtml('product');
+            }
+        });
+    </script>
+</body>
+</html>
